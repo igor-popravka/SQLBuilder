@@ -41,9 +41,9 @@ class Select implements ISelect, ICommand {
      * @return string
      * @throws SQLException
      */
-    public function getSql (): string {
+    public function getStatement (): string {
         $expressions = implode(', ', $this->expressions);
-        $from = isset($this->from) ? ' ' . $this->from->getSql() : '';
+        $from = isset($this->from) ? ' ' . $this->from->getStatement() : '';
 
         if ($expressions == self::EXPRESSION_ALL && empty($from)) {
             throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);

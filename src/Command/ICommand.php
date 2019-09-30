@@ -6,5 +6,5 @@ namespace SQLBuilder\Command;
 
 
 interface ICommand {
-    public function getSql (): string;
+    public function getStatement(): string;
 }
