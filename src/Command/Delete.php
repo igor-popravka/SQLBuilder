@@ -6,9 +6,10 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
+use SQLBuilder\IStatement;
 
 
-class Delete implements IDelete, ICommand {
+class Delete implements IDelete, IStatement {
     /**
      * @var ITable
      */

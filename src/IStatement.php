@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace SQLBuilder\Command;
+namespace SQLBuilder;
 
 
-interface ICommand {
+interface IStatement {
     public function getStatement(): string;
 }

@@ -7,8 +7,9 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
+use SQLBuilder\IStatement;
 
-class Insert implements IInsert, ICommand {
+class Insert implements IInsert, IStatement {
     /**
      * @var ITable
      */

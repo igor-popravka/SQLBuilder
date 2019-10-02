@@ -7,8 +7,9 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
+use SQLBuilder\IStatement;
 
-class Select implements ISelect, ICommand {
+class Select implements ISelect, IStatement {
     /**
      * @var string[]
      */

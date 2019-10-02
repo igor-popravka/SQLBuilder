@@ -7,8 +7,9 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
+use SQLBuilder\IStatement;
 
-class From implements IFrom, ICommand {
+class From implements IFrom, IStatement {
     /**
      * @var ITable
      */

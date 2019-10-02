@@ -5,22 +5,22 @@ declare(strict_types=1);
 namespace SQLBuilder;
 
 
-use SQLBuilder\Command\ICommand;
+use SQLBuilder\Command\IStatement;
 
 class SQLQuery implements ISQLQuery {
-    public function select(): ICommand {
+    public function select(): IStatement {
         // TODO: Implement select() method.
     }
 
-    public function insert(): ICommand {
+    public function insert(): IStatement {
         // TODO: Implement insert() method.
     }
 
-    public function update(): ICommand {
+    public function update(): IStatement {
         // TODO: Implement update() method.
     }
 
-    public function delete(): ICommand {
+    public function delete(): IStatement {
         // TODO: Implement delete() method.
     }
 }
