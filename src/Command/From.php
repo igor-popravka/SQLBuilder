@@ -29,7 +29,7 @@ class From implements IFrom, ICommand {
     /**
      * @return string
      */
-    public function getSql (): string {
+    public function getStatement(): string {
         return "FROM {$this->table}";
     }
 }

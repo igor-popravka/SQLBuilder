@@ -27,21 +27,21 @@ class SelectTest extends TestCase {
         self::expectExceptionCode(SQLException::E_CODE_NO_TABLE_USED);
 
         $select = new Select();
-        $select->getSql();
+        $select->getStatement();
     }
 
     public function testGetSqlDefaultExpression () {
         $select = new Select();
         $select->from('users');
 
-        self::assertEquals('SELECT * FROM users;', $select->getSql());
+        self::assertEquals('SELECT * FROM users;', $select->getStatement());
     }
 
     public function testGetSqlExpression () {
         $select = new Select("CONCAT ( name, ' ', surname) AS FullName", 'CURDATE() AS Date');
         $select->from('users');
 
-        self::assertEquals("SELECT CONCAT ( name, ' ', surname) AS FullName, CURDATE() AS Date FROM users;", $select->getSql());
+        self::assertEquals("SELECT CONCAT ( name, ' ', surname) AS FullName, CURDATE() AS Date FROM users;", $select->getStatement());
     }
 
     public function testFrom () {
