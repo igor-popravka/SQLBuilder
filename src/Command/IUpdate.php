@@ -7,7 +7,7 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 
-interface IUpdate {
+interface IUpdate extends ICommand {
     public function __construct (ITable $table);
 
     public function set (string $column, $value): IUpdate;

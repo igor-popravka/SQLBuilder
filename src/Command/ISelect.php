@@ -7,7 +7,7 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 
-interface ISelect {
+interface ISelect extends ICommand  {
     const EXPRESSION_ALL = '*';
 
     public function __construct (string $expression = ISelect::EXPRESSION_ALL, string ...$_expression);

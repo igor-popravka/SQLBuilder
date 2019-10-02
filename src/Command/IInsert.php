@@ -7,7 +7,7 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 
-interface IInsert {
+interface IInsert extends ICommand {
     public function __construct(ITable $table);
 
     public function columns(string ...$column): IInsert;

@@ -11,7 +11,7 @@ use SQLBuilder\ITable;
  * Date: 02.10.2019
  * Time: 12:11
  */
-interface IDelete {
+interface IDelete extends ICommand {
     public function __construct(ITable $table);
 
     public function where(string $expression);
