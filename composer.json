@@ -1,5 +1,6 @@
 {
   "name": "igor-popravka/SQLBuilder",
+  "version": "1.0.1",
   "type": "library",
   "description": "SQL instruction builder for PHP",
   "authors": [
