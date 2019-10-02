@@ -42,7 +42,7 @@ class Update implements IUpdate, ICommand {
      */
     public function getStatement (): string {
         if (empty($this->columns)) {
-            throw SQLException::create('Update date not set.');
+            throw SQLException::create('Data to updating are not set.');
         }
 
         $statement = "UPDATE {$this->table} SET ";
