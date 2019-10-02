@@ -5,60 +5,34 @@ declare(strict_types=1);
 namespace Unit\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SQLBuilder\Command\From;
-use SQLBuilder\Command\ICommand;
-use SQLBuilder\Command\IFrom;
-use SQLBuilder\Command\ISelect;
 use SQLBuilder\Command\Select;
 use SQLBuilder\SQLException;
+use SQLBuilder\Table;
 
 class SelectTest extends TestCase {
 
-    public function testSelectInstances () {
+    public function testGetStatementDefaultExpression() {
         $select = new Select();
+        $select->from(new Table('users'));
 
-        self::assertInstanceOf(ISelect::class, $select);
-        self::assertInstanceOf(ICommand::class, $select);
+        self::assertEquals('SELECT * FROM `users`;', $select->getStatement());
     }
 
-    public function testGetSqlErrorNoTableUsed () {
-        self::expectException(SQLException::class);
-        self::expectExceptionMessage(SQLException::E_MSG_NO_TABLE_USED);
-        self::expectExceptionCode(SQLException::E_CODE_NO_TABLE_USED);
-
-        $select = new Select();
-        $select->getStatement();
-    }
-
-    public function testGetSqlDefaultExpression () {
-        $select = new Select();
-        $select->from('users');
-
-        self::assertEquals('SELECT * FROM users;', $select->getStatement());
-    }
-
-    public function testGetSqlExpression () {
+    public function testGetStatementExpression() {
         $select = new Select("CONCAT ( name, ' ', surname) AS FullName", 'CURDATE() AS Date');
-        $select->from('users');
+        $select->from(new Table('users'));
 
-        self::assertEquals("SELECT CONCAT ( name, ' ', surname) AS FullName, CURDATE() AS Date FROM users;", $select->getStatement());
+        self::assertEquals("SELECT CONCAT ( name, ' ', surname) AS FullName, CURDATE() AS Date FROM `users`;", $select->getStatement());
     }
 
-    public function testFrom () {
-        $select = new Select();
-        $from = $select->from('users');
-
-        self::assertInstanceOf(From::class, $from);
-        self::assertInstanceOf(IFrom::class, $from);
-        self::assertInstanceOf(ICommand::class, $from);
-    }
-
-    public function testFromErrorNoTableUsed () {
+    public function testGetStatementErrorNoTablesUsed() {
         self::expectException(SQLException::class);
         self::expectExceptionMessage(SQLException::E_MSG_NO_TABLE_USED);
         self::expectExceptionCode(SQLException::E_CODE_NO_TABLE_USED);
 
-        $select = new Select();
-        $select->from('');
+        $select = new Select("NOW()");
+        $select->from(new Table(''));
+
+        self::assertEquals("SELECT NOW();", $select->getStatement());
     }
 }

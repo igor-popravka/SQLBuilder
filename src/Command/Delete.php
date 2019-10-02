@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace SQLBuilder\Command;
 
+use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
 
 
 class Delete implements IDelete, ICommand {
     /**
-     * @var string
+     * @var ITable
      */
     private $table;
 
@@ -20,19 +21,15 @@ class Delete implements IDelete, ICommand {
 
     /**
      * Delete constructor.
-     * @param string $table
+     * @param ITable $table
      * @throws SQLException
      */
-    public function __construct(string $table) {
-        if (empty($table)) {
-            throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);
-        }
-
+    public function __construct(ITable $table) {
         $this->table = $table;
     }
 
     public function getStatement(): string {
-        $statement = "DELETE FROM {$this->table}";
+        $statement = "DELETE FROM {$this->table->getName()}";
 
         if (!empty($this->where)) {
             $statement .= " WHERE {$this->where}";

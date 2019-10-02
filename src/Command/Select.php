@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SQLBuilder\Command;
 
 
+use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
 
 class Select implements ISelect, ICommand {
@@ -26,11 +27,11 @@ class Select implements ISelect, ICommand {
     }
 
     /**
-     * @param string $table
+     * @param ITable $table
      * @return IFrom
      * @throws SQLException
      */
-    public function from (string $table): IFrom {
+    public function from (ITable $table): IFrom {
         if (!isset($this->from)) {
             $this->from = new From($table);
         }
@@ -43,12 +44,7 @@ class Select implements ISelect, ICommand {
      */
     public function getStatement (): string {
         $expressions = implode(', ', $this->expressions);
-        $from = isset($this->from) ? ' ' . $this->from->getStatement() : '';
 
-        if ($expressions == self::EXPRESSION_ALL && empty($from)) {
-            throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);
-        }
-
-        return "SELECT {$expressions}{$from};";
+        return "SELECT {$expressions} {$this->from->getStatement()};";
     }
 }

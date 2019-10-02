@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace SQLBuilder\Command;
 
 
-use phpDocumentor\Reflection\Types\This;
+use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
 
 class Update implements IUpdate, ICommand {
     /**
-     * @var string
+     * @var ITable
      */
     private $table;
 
@@ -26,14 +26,10 @@ class Update implements IUpdate, ICommand {
 
     /**
      * Update constructor.
-     * @param string $table
+     * @param ITable $table
      * @throws SQLException
      */
-    public function __construct (string $table) {
-        if (empty($table)) {
-            throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);
-        }
-
+    public function __construct (ITable $table) {
         $this->table = $table;
     }
 
@@ -46,7 +42,7 @@ class Update implements IUpdate, ICommand {
             throw SQLException::create('Data to updating are not set.');
         }
 
-        $statement = "UPDATE {$this->table} SET ";
+        $statement = "UPDATE {$this->table->getName()} SET ";
         foreach ($this->columns as $column => $value) {
             $statement .= "{$column}='{$value}'";
 

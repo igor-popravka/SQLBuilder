@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace SQLBuilder\Command;
 
 
+use SQLBuilder\ITable;
+
 interface IUpdate {
-    public function __construct (string $table);
+    public function __construct (ITable $table);
 
     public function set (string $column, $value): IUpdate;
 

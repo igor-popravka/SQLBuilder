@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace SQLBuilder\Command;
 
 
+use SQLBuilder\ITable;
 use SQLBuilder\SQLException;
 
-class InsertInto implements IInsertInto, ICommand {
+class Insert implements IInsert, ICommand {
     /**
-     * @var string
+     * @var ITable
      */
     private $table;
 
@@ -26,23 +27,19 @@ class InsertInto implements IInsertInto, ICommand {
 
     /**
      * InsertInto constructor.
-     * @param string $table
+     * @param ITable $table
      * @throws SQLException
      */
-    public function __construct(string $table) {
-        if (empty($table)) {
-            throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);
-        }
-
+    public function __construct(ITable $table) {
         $this->table = $table;
     }
 
     /**
      * @param string[] ...$columns
-     * @return IInsertInto|InsertInto
+     * @return IInsert|Insert
      * @throws SQLException
      */
-    public function columns(string ...$columns): IInsertInto {
+    public function columns(string ...$columns): IInsert {
         if (!empty($this->columns)) {
             throw SQLException::create('The columns already set.');
         }
@@ -54,10 +51,10 @@ class InsertInto implements IInsertInto, ICommand {
 
     /**
      * @param array ...$values
-     * @return IInsertInto|InsertInto
+     * @return IInsert|Insert
      * @codeCoverageIgnore
      */
-    public function values(...$values): IInsertInto {
+    public function values(...$values): IInsert {
         $this->values[] = $values;
 
         return $this;
@@ -72,7 +69,7 @@ class InsertInto implements IInsertInto, ICommand {
             throw SQLException::create('The values should be set before statement.');
         }
 
-        $statement = "INSERT INTO {$this->table}";
+        $statement = "INSERT INTO {$this->table->getName()}";
 
         if (!empty($this->columns)) {
             $statement .= sprintf(' (%s)', implode(', ', $this->columns));
