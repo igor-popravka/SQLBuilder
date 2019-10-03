@@ -30,7 +30,7 @@ class Delete implements IDelete, IStatement {
     }
 
     public function getStatement(): string {
-        $statement = "DELETE FROM {$this->table->getName()}";
+        $statement = "DELETE FROM {$this->table->name()}";
 
         if (!empty($this->where)) {
             $statement .= " WHERE {$this->where}";

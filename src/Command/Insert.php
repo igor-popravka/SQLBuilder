@@ -70,7 +70,7 @@ class Insert implements IInsert, IStatement {
             throw SQLException::create('The values should be set before statement.');
         }
 
-        $statement = "INSERT INTO {$this->table->getName()}";
+        $statement = "INSERT INTO {$this->table->name()}";
 
         if (!empty($this->columns)) {
             $statement .= sprintf(' (%s)', implode(', ', $this->columns));

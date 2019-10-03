@@ -43,7 +43,7 @@ class Update implements IUpdate, IStatement {
             throw SQLException::create('Data to updating are not set.');
         }
 
-        $statement = "UPDATE {$this->table->getName()} SET ";
+        $statement = "UPDATE {$this->table->name()} SET ";
         foreach ($this->columns as $column => $value) {
             $statement .= "{$column}='{$value}'";
 

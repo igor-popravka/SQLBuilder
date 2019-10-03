@@ -12,5 +12,7 @@ namespace SQLBuilder;
 interface ITable {
     public function __construct(string $name);
 
-    public function getName(): string;
+    public function name(): string;
+
+    public function alias():? string;
 }

@@ -7,6 +7,6 @@ namespace SQLBuilder\Command;
 
 use SQLBuilder\ITable;
 
-interface IFrom {
+interface IFrom extends ICommand {
     public function __construct (ITable $table);
 }

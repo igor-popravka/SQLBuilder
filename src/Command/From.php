@@ -28,6 +28,6 @@ class From implements IFrom, IStatement {
      * @return string
      */
     public function getStatement(): string {
-        return "FROM {$this->table->getName()}";
+        return "FROM {$this->table->name()}";
     }
 }

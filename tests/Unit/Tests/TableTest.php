@@ -32,6 +32,6 @@ class TableTest extends TestCase {
             self::expectExceptionCode(SQLException::E_CODE_NO_TABLE_USED);
         }
 
-        self::assertEquals($expected, $table->getName());
+        self::assertEquals($expected, $table->name());
     }
 }
