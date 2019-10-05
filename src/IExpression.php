@@ -10,5 +10,5 @@ namespace SQLBuilder;
  * Time: 12:31
  */
 interface IExpression {
-    public function as(string $alias): IExpression;
+
 }

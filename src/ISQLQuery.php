@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SQLBuilder;
 
 
-use SQLBuilder\Command\ICommand;
+use SQLBuilder\SQLCommand\ICommand;
 
 interface ISQLQuery {
     public function select(): ICommand;

@@ -8,5 +8,5 @@ namespace SQLBuilder;
 interface IColumn {
     public function __construct(string $name, ITable $table);
 
-    public function format(string $format, string $culture): IColumn;
+    public function name(): string;
 }

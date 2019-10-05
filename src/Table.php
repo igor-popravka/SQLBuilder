@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace SQLBuilder;
 
+use SQLBuilder\SQLKeyword\TAlias;
+
 /**
  * @author: igor.popravka
  * Date: 02.10.2019
  * Time: 13:35
+ *
+ * @method as(string $alias = null) :? string
  */
-class Table implements ITable, IExpression {
+class Table implements ITable {
+    use TAlias;
     /**
      * @var string
      */
     private $name;
-
-    /**
-     * @var string
-     */
-    private $alias;
 
     public function __construct(string $name) {
         $this->name = trim($name, '` ');
@@ -30,14 +30,5 @@ class Table implements ITable, IExpression {
         }
 
         return "`{$this->name}`";
-    }
-
-    public function as(string $alias): IExpression {
-        $this->alias = $alias;
-        return $this;
-    }
-
-    public function alias():? string {
-        return $this->alias;
     }
 }

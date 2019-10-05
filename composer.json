@@ -1,5 +1,5 @@
 {
-  "name": "igor-popravka/SQLBuilder",
+  "name": "igor-popravka/sql-builder",
   "version": "1.0.1",
   "type": "library",
   "description": "SQL instruction builder for PHP",
@@ -10,7 +10,7 @@
     }
   ],
   "require": {
-    "php": "^7.1"
+    "php": "^7.2"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.0"

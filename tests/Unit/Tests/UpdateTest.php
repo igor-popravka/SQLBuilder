@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Tests;
 
-use SQLBuilder\Command\Update;
+use SQLBuilder\SQLCommand\Update;
 use PHPUnit\Framework\TestCase;
 use SQLBuilder\SQLException;
 use SQLBuilder\Table;

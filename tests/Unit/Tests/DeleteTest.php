@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Tests;
 
-use SQLBuilder\Command\Delete;
+use SQLBuilder\SQLCommand\Delete;
 use PHPUnit\Framework\TestCase;
 use SQLBuilder\Table;
 

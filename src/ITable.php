@@ -13,6 +13,4 @@ interface ITable {
     public function __construct(string $name);
 
     public function name(): string;
-
-    public function alias():? string;
 }

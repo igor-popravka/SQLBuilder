@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SQLBuilder;
 
 
-use SQLBuilder\Command\ICommand;
-use SQLBuilder\Command\Select;
+use SQLBuilder\SQLCommand\ICommand;
+use SQLBuilder\SQLCommand\Select;
 
 class SQLQuery implements ISQLQuery {
     /**

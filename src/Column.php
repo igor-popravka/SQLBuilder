@@ -4,67 +4,49 @@ declare(strict_types=1);
 
 namespace SQLBuilder;
 
+use SQLBuilder\SQLFunction\TFormat;
+use SQLBuilder\SQLKeyword\TAlias;
 
-class Column implements IColumn, IExpression, IStatement {
+/**
+ * @author: igor.popravka
+ * Date: 02.10.2019
+ * Time: 13:35
+ *
+ * @method as(string $alias = null) :? string
+ * @method format(string $format, string $culture)
+ */
+class Column implements IColumn, IStatement {
+    use TAlias, TFormat;
+
     /**
      * @var string
      */
     private $name;
 
     /**
-     * @var string
-     */
-    private $alias;
-
-    /**
      * @var ITable
      */
     private $table;
 
-    /**
-     * @var array
-     */
-    private $functions = [];
-
-    public function __construct(string $name, ITable $table) {
+    public function __construct (string $name, ITable $table) {
         $this->name = $name;
         $this->table = $table;
     }
 
-    /**
-     * @param string $format
-     * @param string $culture
-     * @return IColumn
-     */
-    public function format(string $format, string $culture): IColumn {
-        //todo: implement in separate STATIC class with STATIC function
-        $this->functions['FORMAT'] = ["'{$format}'", "'{$culture}'"];
-        return $this;
+    public function getStatement (): string {
+        $statement = $this->name();
+
+        foreach ($this->functions as $view) {
+            $statement = $this->renderFunction($view, $statement);
+        }
+
+        return $this->as() ? "{$statement} AS {$this->as()}" : $statement;
     }
 
-    /**
-     * @param string $alias
-     * @return IExpression|IColumn
-     */
-    public function as(string $alias): IExpression {
-        $this->alias = $alias;
-        return $this;
-    }
-
-    public function getStatement(): string {
-        $statement = sprintf('%s.%s',
-            $this->table->alias() ?? $this->table->name(),
+    public function name (): string {
+        return sprintf('%s.%s',
+            $this->table->as() ?? $this->table->name(),
             $this->name
         );
-
-        if (isset($this->functions['FORMAT'])) {
-            $statement = sprintf("FORMAT({$statement}, %s)", implode(', ', $this->functions['FORMAT']));
-        }
-
-        if (isset($this->alias)) {
-            $statement = "{$statement} AS {$this->alias}";
-        }
-
-        return $statement;
     }
 }

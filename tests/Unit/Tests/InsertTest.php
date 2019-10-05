@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Tests;
 
-use SQLBuilder\Command\Insert;
+use SQLBuilder\SQLCommand\Insert;
 use PHPUnit\Framework\TestCase;
 use SQLBuilder\SQLException;
 use SQLBuilder\Table;

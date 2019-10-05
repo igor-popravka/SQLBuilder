@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Unit\Tests;
 
 use PHPUnit\Framework\TestCase;
-use SQLBuilder\Command\Select;
+use SQLBuilder\SQLCommand\Select;
 use SQLBuilder\SQLException;
 use SQLBuilder\Table;
 

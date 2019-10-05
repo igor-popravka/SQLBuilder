@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SQLBuilder\Command;
+namespace SQLBuilder\SQLCommand;
 
 
 interface IJoin {
