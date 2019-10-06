@@ -8,5 +8,5 @@ namespace SQLBuilder\SQLCommand;
 use SQLBuilder\ITable;
 
 interface IFrom extends ICommand {
-    public function __construct (ITable $table);
+    public function __construct (ITable $table, ITable ...$_table);
 }

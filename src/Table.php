@@ -13,22 +13,26 @@ use SQLBuilder\SQLKeyword\TAlias;
  *
  * @method as(string $alias = null) :? string
  */
-class Table implements ITable {
+class Table implements ITable, IStatement {
     use TAlias;
     /**
      * @var string
      */
     private $name;
 
-    public function __construct(string $name) {
+    public function __construct (string $name) {
         $this->name = trim($name, '` ');
     }
 
-    public function name(): string {
+    public function name (): string {
         if (empty($this->name)) {
             throw SQLException::create(SQLException::E_MSG_NO_TABLE_USED, SQLException::E_CODE_NO_TABLE_USED);
         }
 
         return "`{$this->name}`";
+    }
+
+    public function getStatement (): string {
+        return $this->as() ? "{$this->name()} AS {$this->as()}" : $this->name();
     }
 }

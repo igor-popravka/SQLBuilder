@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace SQLBuilder\SQLCommand;
 
-
+use SQLBuilder\IExpression;
 use SQLBuilder\ITable;
 
 interface ISelect extends ICommand  {
-    const EXPRESSION_ALL = '*';
+    public function __construct (IExpression ...$expression);
 
-    public function __construct (string $expression = ISelect::EXPRESSION_ALL, string ...$_expression);
-
-    public function from (ITable $table): IFrom;
+    public function from (ITable $table, ITable ...$_table): IFrom;
 }

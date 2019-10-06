@@ -15,7 +15,7 @@ use SQLBuilder\SQLKeyword\TAlias;
  * @method as(string $alias = null) :? string
  * @method format(string $format, string $culture)
  */
-class Column implements IColumn, IStatement {
+class Column implements IColumn, IStatement, IExpression {
     use TAlias, TFormat;
 
     /**

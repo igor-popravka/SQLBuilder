@@ -5,34 +5,47 @@ declare(strict_types=1);
 namespace Unit\Tests;
 
 use PHPUnit\Framework\TestCase;
+use SQLBuilder\Column;
 use SQLBuilder\SQLCommand\Select;
-use SQLBuilder\SQLException;
 use SQLBuilder\Table;
 
 class SelectTest extends TestCase {
 
-    public function testGetStatementDefaultExpression() {
-        $select = new Select();
-        $select->from(new Table('users'));
+    public function testGetStatement_UseAliases () {
+        $tbl_users = new Table('users');
+        $tbl_users->as('u');
 
-        self::assertEquals('SELECT * FROM `users`;', $select->getStatement());
+        $clu_user = new Column('user', $tbl_users);
+        $clu_user->as('UN');
+
+        $clu_age = new Column ('birthday', $tbl_users);
+        $clu_age->as('BD');
+        $clu_age->format('d', 'en-US');
+
+        $tbl_account = new Table('accounts');
+        $tbl_account->as('a');
+
+        $cla_acc = new Column('account_number', $tbl_account);
+        $cla_acc->as('AN');
+
+        $select = new Select($clu_user, $clu_age, $cla_acc);
+        $select->from($tbl_users, $tbl_account);
+
+        self::assertEquals("SELECT u.user AS UN, FORMAT(u.birthday, 'd', 'en-US') AS BD, a.account_number AS AN FROM `users` AS u, `accounts` AS a;", $select->getStatement());
     }
 
-    public function testGetStatementExpression() {
-        $select = new Select("CONCAT ( name, ' ', surname) AS FullName", 'CURDATE() AS Date');
-        $select->from(new Table('users'));
+    public function testGetStatement () {
+        $tbl_users = new Table('users');
+        $clu_user = new Column('user', $tbl_users);
+        $clu_age = new Column ('birthday', $tbl_users);
+        $clu_age->format('m', 'en-US');
 
-        self::assertEquals("SELECT CONCAT ( name, ' ', surname) AS FullName, CURDATE() AS Date FROM `users`;", $select->getStatement());
-    }
+        $tbl_account = new Table('accounts');
+        $cla_acc = new Column('account_number', $tbl_account);
 
-    public function testGetStatementErrorNoTablesUsed() {
-        self::expectException(SQLException::class);
-        self::expectExceptionMessage(SQLException::E_MSG_NO_TABLE_USED);
-        self::expectExceptionCode(SQLException::E_CODE_NO_TABLE_USED);
+        $select = new Select($clu_user, $clu_age, $cla_acc);
+        $select->from($tbl_users, $tbl_account);
 
-        $select = new Select("NOW()");
-        $select->from(new Table(''));
-
-        self::assertEquals("SELECT NOW();", $select->getStatement());
+        self::assertEquals("SELECT `users`.user, FORMAT(`users`.birthday, 'm', 'en-US'), `accounts`.account_number FROM `users`, `accounts`;", $select->getStatement());
     }
 }

@@ -6,28 +6,45 @@ namespace SQLBuilder\SQLCommand;
 
 
 use SQLBuilder\ITable;
-use SQLBuilder\SQLException;
+use SQLBuilder\Table;
 use SQLBuilder\IStatement;
 
 class From implements IFrom, IStatement {
     /**
-     * @var ITable
+     * @var Table[]
      */
-    private $table;
+    private $tables = [];
 
     /**
      * From constructor.
      * @param ITable $table
-     * @throws SQLException
+     * @param ITable ...$_table
      */
-    public function __construct (ITable $table) {
-        $this->table = $table;
+    public function __construct (ITable $table, ITable ...$_table) {
+        $this->tables[] = $table;
+
+        if (!empty($_table)) {
+            $this->tables = array_merge($this->tables, $_table);
+        }
     }
 
     /**
      * @return string
      */
-    public function getStatement(): string {
-        return "FROM {$this->table->name()}";
+    public function getStatement (): string {
+        $statement = '';
+
+        if (!empty($this->tables)) {
+            $statement = 'FROM ';
+            foreach ($this->tables as $table) {
+                if (next($this->tables)) {
+                    $statement .= "{$table->getStatement()}, ";
+                } else {
+                    $statement .= "{$table->getStatement()}";
+                }
+            }
+        }
+
+        return $statement;
     }
 }

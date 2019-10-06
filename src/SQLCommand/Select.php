@@ -5,47 +5,59 @@ declare(strict_types=1);
 namespace SQLBuilder\SQLCommand;
 
 
+use SQLBuilder\Column;
+use SQLBuilder\IExpression;
 use SQLBuilder\ITable;
-use SQLBuilder\SQLException;
 use SQLBuilder\IStatement;
 
 class Select implements ISelect, IStatement {
     /**
-     * @var string[]
+     * @var IExpression[]|Column[]
      */
-    private $expressions;
+    private $expressions = [];
+
     /**
      * @var From
      */
     private $from;
 
-    public function __construct (string $expression = self::EXPRESSION_ALL, string ...$_expression) {
-        if ($expression == self::EXPRESSION_ALL || empty($expression)) {
-            $this->expressions = [$expression];
-        } else {
-            $this->expressions = array_merge([$expression], $_expression);
-        }
+    public function __construct (IExpression ...$expression) {
+        $this->expressions = $expression;
     }
 
     /**
      * @param ITable $table
-     * @return IFrom
-     * @throws SQLException
+     * @param ITable ...$_table
+     * @return IFrom|From
      */
-    public function from (ITable $table): IFrom {
+    public function from (ITable $table, ITable ...$_table): IFrom {
         if (!isset($this->from)) {
-            $this->from = new From($table);
+            $this->from = new From($table, ...$_table);
         }
         return $this->from;
     }
 
     /**
      * @return string
-     * @throws SQLException
      */
     public function getStatement (): string {
-        $expressions = implode(', ', $this->expressions);
+        $expressions = '*';
 
-        return "SELECT {$expressions} {$this->from->getStatement()};";
+        if (!empty($this->expressions)) {
+            $expressions = '';
+            foreach ($this->expressions as $expression) {
+                if (next($this->expressions)) {
+                    $expressions .= "{$expression->getStatement()}, ";
+                } else {
+                    $expressions .= "{$expression->getStatement()}";
+                }
+            }
+        }
+
+        if (isset($this->from)) {
+            $expressions .= " {$this->from->getStatement()}";
+        }
+
+        return "SELECT {$expressions};";
     }
 }
