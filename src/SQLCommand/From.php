@@ -16,11 +16,16 @@ class From implements IFrom, IStatement {
     private $tables = [];
 
     /**
+     * @var InnerJoin[]
+     */
+    private $joins = [];
+
+    /**
      * From constructor.
      * @param ITable $table
-     * @param ITable ...$_table
+     * @param ITable|ITable[] ...$_table
      */
-    public function __construct (ITable $table, ITable ...$_table) {
+    public function __construct(ITable $table, ITable ...$_table) {
         $this->tables[] = $table;
 
         if (!empty($_table)) {
@@ -31,20 +36,27 @@ class From implements IFrom, IStatement {
     /**
      * @return string
      */
-    public function getStatement (): string {
+    public function getStatement(): string {
         $statement = '';
 
-        if (!empty($this->tables)) {
-            $statement = 'FROM ';
-            foreach ($this->tables as $table) {
-                if (next($this->tables)) {
-                    $statement .= "{$table->getStatement()}, ";
-                } else {
-                    $statement .= "{$table->getStatement()}";
-                }
+        foreach ($this->tables as $table) {
+            if (next($this->tables)) {
+                $statement .= " {$table->getStatement()},";
+            } else {
+                $statement .= " {$table->getStatement()}";
             }
         }
 
-        return $statement;
+        foreach ($this->joins as $join) {
+            $statement .= " {$join->getStatement()}";
+        }
+
+        return "FROM{$statement}";
+    }
+
+    public function innerJoin(ITable $table): IJoin {
+        $join = new InnerJoin($table, $this);
+        $this->joins[] = $join;
+        return $join;
     }
 }

@@ -27,8 +27,8 @@ class Select implements ISelect, IStatement {
 
     /**
      * @param ITable $table
-     * @param ITable ...$_table
-     * @return IFrom|From
+     * @param ITable|ITable[] ...$_table
+     * @return IFrom
      */
     public function from (ITable $table, ITable ...$_table): IFrom {
         if (!isset($this->from)) {

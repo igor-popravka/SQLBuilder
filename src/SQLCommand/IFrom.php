@@ -9,4 +9,6 @@ use SQLBuilder\ITable;
 
 interface IFrom extends ICommand {
     public function __construct (ITable $table, ITable ...$_table);
+
+    public function innerJoin(ITable $table): IJoin;
 }
